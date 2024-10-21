@@ -10,12 +10,19 @@ import java.awt.event.*;
 
 public class Menu extends JFrame implements ActionListener {
     
-    JButton logInBtn;
-    JButton signInBtn;
-    JButton exitBtn;
-    JPanel panel;
+    private JButton logInBtn;
+    private JButton signInBtn;
+    private JButton exitBtn;
+    private JPanel panel;
     
-    Menu () {
+    Admin admin;
+    
+    public Menu(Admin admin){
+        this.admin=admin;
+        initComponents();
+    }
+    
+    private void initComponents () {
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setSize(500, 500);
         panel = new JPanel();
@@ -39,18 +46,18 @@ public class Menu extends JFrame implements ActionListener {
     }
     
     @Override
-    public void actionPerformed(ActionEvent e){
-        if (e.getSource()==logInBtn) {
-            LogInGUI logIn = new LogInGUI();
+    public void actionPerformed(ActionEvent evt){
+        if (evt.getSource()==logInBtn) {
+            LogInGUI logIn = new LogInGUI(admin);
             logIn.setVisible(true);
             logIn.setLocationRelativeTo(null);
             this.dispose();
-        } else if (e.getSource()==signInBtn) {
-            SignInGUI signIn = new SignInGUI();
+        } else if (evt.getSource()==signInBtn) {
+            SignInGUI signIn = new SignInGUI(admin);
             signIn.setVisible(true);
             signIn.setLocationRelativeTo(null);
             this.dispose();
-        } else if (e.getSource()==exitBtn) {
+        } else if (evt.getSource()==exitBtn) {
         
         }
     }

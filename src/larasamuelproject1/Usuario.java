@@ -7,14 +7,17 @@ public class Usuario {
     private String user;
     private String password;
     private int puntos;
-    private Calendar fecha;
+    private String fecha;
     private boolean estado;
+    
+    public Usuario () {}
     
     public Usuario (String user, String password) {
         this.user=user;
         this.password=password;
         this.puntos=0;
-        this.fecha = Calendar.getInstance();
+        Calendar calendar = Calendar.getInstance();
+        this.fecha=calendar.toString();
         this.estado=false;
     }
     
@@ -26,7 +29,19 @@ public class Usuario {
         return this.password;
     }
     
-    public Calendar getFecha() {
+    public String getFecha() {
         return this.fecha;
+    }
+    
+    public boolean getEstado(){
+        return this.estado;
+    }
+    
+    public void activarEstado(){
+        this.estado=true;
+    }
+    
+    public void desactivarEstado(){
+        this.estado=false;
     }
 }
