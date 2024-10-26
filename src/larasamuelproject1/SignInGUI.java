@@ -12,6 +12,8 @@ import java.awt.event.*;
 public class SignInGUI extends JFrame implements ActionListener{
     
     private JPanel panel;
+    private JButton goBackBtn;
+    private JLabel titleSignIn;
     private JLabel userLbl;
     private JTextField userTxt;
     private JLabel passwordLbl;
@@ -35,6 +37,13 @@ public class SignInGUI extends JFrame implements ActionListener{
         panel.setBackground(Color.red);
         panel.setLayout(null);
         
+        goBackBtn = new JButton("Regresar");
+        goBackBtn.setBounds(0, 0, 100, 25);
+        goBackBtn.addActionListener(this);
+        
+        titleSignIn = new JLabel("Sign In");
+        titleSignIn.setFont(new Font("Algerian", Font.PLAIN, 50));
+        titleSignIn.setBounds(160, 0, 250, 60);
         userLbl = new JLabel("Username: ");
         userTxt = new JTextField();
         userLbl.setFont(new Font("Calibri", Font.BOLD, 15));
@@ -56,6 +65,8 @@ public class SignInGUI extends JFrame implements ActionListener{
         signInBtn = new JButton("Confirmar");
         signInBtn.setBounds(200, 300, 100, 25);
         signInBtn.addActionListener(this);
+        panel.add(goBackBtn);
+        panel.add(titleSignIn);
         panel.add(userLbl);
         panel.add(userTxt);
         panel.add(passwordLbl);
@@ -72,7 +83,11 @@ public class SignInGUI extends JFrame implements ActionListener{
         String user = userTxt.getText();
         String password = passwordTxt.getText();
         int longitud = password.length();
-        if (evt.getSource()==generateDateBtn) {
+        if(evt.getSource()==goBackBtn){
+            Menu startPage = new Menu(admin);
+            startPage.setVisible(true);
+            this.dispose();
+        }else if (evt.getSource()==generateDateBtn) {
             Calendar calendar = Calendar.getInstance();
             int day = Calendar.DATE;
             int month = (Calendar.MONTH)+1;
@@ -89,6 +104,7 @@ public class SignInGUI extends JFrame implements ActionListener{
                 MenuGame menuG = new MenuGame(admin);
                 menuG.setVisible(true);
                 menuG.setLocationRelativeTo(null);
+                menuG.setlblNameUser("@"+userTxt.getText());
                 this.dispose();
             }
         }

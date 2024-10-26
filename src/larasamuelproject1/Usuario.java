@@ -4,7 +4,7 @@ import java.util.Calendar;
 
 public class Usuario {
     
-    private String user;
+    public String user;
     private String password;
     private int puntos;
     private String fecha;
@@ -18,15 +18,23 @@ public class Usuario {
         this.puntos=0;
         Calendar calendar = Calendar.getInstance();
         this.fecha=calendar.toString();
-        this.estado=false;
+        this.estado=true;
     }
     
     public String getUser(){
         return this.user;
     }
     
+    public void setNewPassword(String password){
+        this.password=password;
+    }
+    
     public String getPassword() {
         return this.password;
+    }
+    
+    public void setPuntos(int p){
+        this.puntos=p;
     }
     
     public String getFecha() {
