@@ -29,4 +29,9 @@ public class Canion extends Piece {
         this.sprite=sheet.getSubimage(columnIndex * sheetScaleWidth, isWhite ? 0 : 1 * sheetScaleHeight, sheetScaleWidth, sheetScaleHeight).getScaledInstance(board.titleSize, board.titleSize, BufferedImage.SCALE_SMOOTH);
     }
     
+    @Override
+    public boolean isValidMovement(int col, int row){
+        return this.col == col || this.row == row;
+    }
+    
 }

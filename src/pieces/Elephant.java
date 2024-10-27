@@ -28,4 +28,8 @@ public class Elephant extends Piece {
         this.sprite=sheet.getSubimage(columnIndex * sheetScaleWidth, isWhite ? 0 : 1 * sheetScaleHeight, sheetScaleWidth, sheetScaleHeight).getScaledInstance(board.titleSize, board.titleSize, BufferedImage.SCALE_SMOOTH);
     }
     
+    @Override
+    public boolean isValidMovement(int col, int row){
+        return Math.abs(col - this.col) * Math.abs(row - this.row) == 3;
+    }
 }
