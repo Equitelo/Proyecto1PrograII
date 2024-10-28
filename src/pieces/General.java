@@ -27,4 +27,18 @@ public class General extends Piece{
         
         this.sprite=sheet.getSubimage(columnIndex * sheetScaleWidth, isWhite ? 0 : 1 * sheetScaleHeight, sheetScaleWidth, sheetScaleHeight).getScaledInstance(board.titleSize, board.titleSize, BufferedImage.SCALE_SMOOTH);
     }
+    
+    public boolean isValidMovement(int col, int row){
+        if(Math.abs(col - this.col) + Math.abs(row - this.row) == 1){
+        
+            if ((isWhite && row > 2) || (isWhite && col > 5) || (isWhite && col < 3)) {
+                return false;
+            }
+            if ((!isWhite && row < 7) || (!isWhite && col > 5) || (!isWhite && col < 3)) {
+                return false;
+            }
+            return true;
+        }
+        return false;
+    }
 }

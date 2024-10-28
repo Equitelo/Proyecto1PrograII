@@ -15,8 +15,6 @@ public class Piece {
     public String name;
     public int value;
     
-    public boolean isFirstMove = true;
-    
     BufferedImage sheet;
     
     protected int sheetScaleWidth, sheetScaleHeight;
@@ -24,9 +22,9 @@ public class Piece {
         try {
             sheet = ImageIO.read(getClass().getClassLoader().getResourceAsStream("xp.png"));
             if (sheet != null) {
-            // Ajusta el tamaño de cada pieza en función de las columnas y filas en la imagen
-            int columns = 7; // Número de columnas en tu imagen de sprites
-            int rows = 2; // Número de filas en tu imagen de sprites
+
+            int columns = 7; 
+            int rows = 2; 
             
             sheetScaleWidth = sheet.getWidth() / columns;
             sheetScaleHeight = sheet.getHeight() / rows;

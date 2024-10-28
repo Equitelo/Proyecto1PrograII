@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package larasamuelproject1;
 
 import javax.swing.*;
@@ -28,6 +24,11 @@ public class Board extends JPanel{
     public Piece selectedPiece;
     
     Input input = new Input(this);
+    
+    CheckScanner checkScanner = new CheckScanner(this);
+    
+    private boolean isWhiteToMove = false;
+    private boolean isGameOver = false;
     
     public Board(){
         this.setPreferredSize(new Dimension(cols * titleSize, rows * titleSize));
@@ -57,6 +58,10 @@ public class Board extends JPanel{
         move.piece.yPos = move.newRow * titleSize;
         
         capture(move);
+        
+        isWhiteToMove = !isWhiteToMove;
+        
+        updateGameState();
     }
     
     public void capture(Move move) {
@@ -65,6 +70,12 @@ public class Board extends JPanel{
     
     public boolean isValidMove(Move move) {
         
+        if (isGameOver) {
+            return false;
+        }
+        if (move.piece.isWhite != isWhiteToMove) {
+            return false;
+        }
         if (sameTeam(move.piece, move.capture)) {
             return false;
         }
@@ -74,7 +85,9 @@ public class Board extends JPanel{
         if (move.piece.moveCollidesWithPiece(move.newCol, move.newRow)) {
             return false;
         }
-        
+        if (checkScanner.isGeneralChecked(move)) {
+            return false;
+        }
         
         return true;
     }
@@ -84,6 +97,15 @@ public class Board extends JPanel{
             return false;
         }
         return p1.isWhite == p2.isWhite;
+    }
+    
+    Piece findGeneral(boolean isWhite){
+        for(Piece piece : pieceList){
+            if (isWhite==piece.isWhite && piece.name.equals("General")) {
+                return piece;
+            }
+        }
+        return null;
     }
     
     private void addPieces(){
@@ -96,13 +118,13 @@ public class Board extends JPanel{
         pieceList.add(new Elephant(this, 6, 0, true));
         pieceList.add(new Knight(this, 7, 0, true));
         pieceList.add(new Rook(this, 8, 0, true));
-        pieceList.add(new Canion(this, 1, 1, true));
-        pieceList.add(new Pawn(this, 0, 2, true));
-        pieceList.add(new Pawn(this, 2, 2, true));
-        pieceList.add(new Pawn(this, 4, 2, true));
-        pieceList.add(new Pawn(this, 6, 2, true));
-        pieceList.add(new Pawn(this, 8, 2, true));
-        pieceList.add(new Canion(this, 7, 1, true));
+        pieceList.add(new Canion(this, 1, 2, true));
+        pieceList.add(new Pawn(this, 0, 3, true));
+        pieceList.add(new Pawn(this, 2, 3, true));
+        pieceList.add(new Pawn(this, 4, 3, true));
+        pieceList.add(new Pawn(this, 6, 3, true));
+        pieceList.add(new Pawn(this, 8, 3, true));
+        pieceList.add(new Canion(this, 7, 2, true));
         
         pieceList.add(new Rook(this, 0, 9, false));
         pieceList.add(new Knight(this, 1, 9, false));
@@ -113,13 +135,34 @@ public class Board extends JPanel{
         pieceList.add(new Elephant(this, 6, 9, false));
         pieceList.add(new Knight(this, 7, 9, false));
         pieceList.add(new Rook(this, 8, 9, false));
-        pieceList.add(new Canion(this, 1, 8, false));
-        pieceList.add(new Pawn(this, 0, 7, false));
-        pieceList.add(new Pawn(this, 2, 7, false));
-        pieceList.add(new Pawn(this, 4, 7, false));
-        pieceList.add(new Pawn(this, 6, 7, false));
-        pieceList.add(new Pawn(this, 8, 7, false));
-        pieceList.add(new Canion(this, 7, 8, false));
+        pieceList.add(new Canion(this, 1, 7, false));
+        pieceList.add(new Pawn(this, 0, 6, false));
+        pieceList.add(new Pawn(this, 2, 6, false));
+        pieceList.add(new Pawn(this, 4, 6, false));
+        pieceList.add(new Pawn(this, 6, 6, false));
+        pieceList.add(new Pawn(this, 8, 6, false));
+        pieceList.add(new Canion(this, 7, 7, false));
+    }
+    
+    private void updateGameState(){
+        Piece general = findGeneral(isWhiteToMove);
+        
+        if (general == null) {
+            String winner = isWhiteToMove ? "Rojas" : "Blancas";
+            JOptionPane.showMessageDialog(null, winner + " han ganado tras capturar al General!");
+            isGameOver = true;
+            return;
+        }
+        
+        if (checkScanner.isGameOver(general)) {
+            if (checkScanner.isGeneralChecked(new Move(this, general, general.col, general.row))) {
+                String winner = isWhiteToMove ? "Rojas" : "Blancas";
+                JOptionPane.showMessageDialog(null, winner + " ganan!");
+            } else {
+                JOptionPane.showMessageDialog(null, "Stalemate");
+            }
+            isGameOver = true;
+        }
     }
     
     @Override

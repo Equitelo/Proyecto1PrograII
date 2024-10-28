@@ -7,10 +7,6 @@ package pieces;
 import java.awt.image.BufferedImage;
 import larasamuelproject1.Board;
 
-/**
- *
- * @author user
- */
 public class Elephant extends Piece {
     public Elephant (Board board, int col, int row, boolean isWhite) {
         super(board);
@@ -30,6 +26,22 @@ public class Elephant extends Piece {
     
     @Override
     public boolean isValidMovement(int col, int row){
-        return Math.abs(col - this.col) * Math.abs(row - this.row) == 3;
+        
+         if ( Math.abs(col - this.col) == 2 && Math.abs(row - this.row) == 2){
+            if (isWhite && row > 4) return false;
+            if (!isWhite && row < 5) return false;
+            
+            return true;
+        } 
+        return false;
+    }
+    
+    @Override
+    public boolean moveCollidesWithPiece(int col, int row){
+            
+        if (board.getPiece((col + this.col) / 2, (row + this.row) / 2) != null) {
+            return true;                
+        }
+        return false;
     }
 }

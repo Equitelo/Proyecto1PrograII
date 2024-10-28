@@ -8,12 +8,15 @@ import java.awt.*;
 import javax.swing.*;
 
 public class JFrameBoard {
+    
+    JPanel panel2;
+    
     public static void main(String[] args) {
         JFrame frame = new JFrame();
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.getContentPane().setBackground(Color.black);
         frame.setLayout(new GridBagLayout());
-        frame.setMinimumSize(new Dimension(1000, 1000));
+        frame.setMinimumSize(new Dimension(1000, 1100));
         frame.setLocationRelativeTo(null);
         
         Board board = new Board();

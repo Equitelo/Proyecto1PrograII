@@ -1,19 +1,9 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package larasamuelproject1;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
 import pieces.Piece;
 
-/**
- *
- * @author user
- */
 public class Input extends MouseAdapter{
 
     Board board;
@@ -65,7 +55,4 @@ public class Input extends MouseAdapter{
         board.selectedPiece = null;
         board.repaint();
     }
-    
-    
-    
 }
