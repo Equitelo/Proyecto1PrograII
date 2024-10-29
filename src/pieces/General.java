@@ -27,6 +27,10 @@ public class General extends Piece{
         
         this.sprite=sheet.getSubimage(columnIndex * sheetScaleWidth, isWhite ? 0 : 1 * sheetScaleHeight, sheetScaleWidth, sheetScaleHeight).getScaledInstance(board.titleSize, board.titleSize, BufferedImage.SCALE_SMOOTH);
     }
+
+    public String getName() {
+        return name;
+    }
     
     public boolean isValidMovement(int col, int row){
         if(Math.abs(col - this.col) + Math.abs(row - this.row) == 1){

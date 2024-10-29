@@ -27,25 +27,29 @@ public class Knight extends Piece{
     }
     
     @Override
-public boolean moveCollidesWithPiece(int col, int row) {
-    int deltaX = col - this.col;
-    int deltaY = row - this.row;
+    public boolean moveCollidesWithPiece(int col, int row) {
+        int deltaX = col - this.col;
+        int deltaY = row - this.row;
 
-    if (Math.abs(deltaX) == 2 && Math.abs(deltaY) == 1) {
-        int checkX = this.col + deltaX / 2;
-        int checkY = this.row;
-        if (board.getPiece(checkX, checkY) != null) {
-            return true;
+        if (Math.abs(deltaX) == 2 && Math.abs(deltaY) == 1) {
+            int checkX = this.col + deltaX / 2;
+            int checkY = this.row;
+            if (board.getPiece(checkX, checkY) != null) {
+                return true;
+            }
+        } else if (Math.abs(deltaX) == 1 && Math.abs(deltaY) == 2) {
+            int checkX = this.col;
+            int checkY = this.row + deltaY / 2;
+            if (board.getPiece(checkX, checkY) != null) {
+                return true;
+            }
         }
-    } else if (Math.abs(deltaX) == 1 && Math.abs(deltaY) == 2) {
-        int checkX = this.col;
-        int checkY = this.row + deltaY / 2;
-        if (board.getPiece(checkX, checkY) != null) {
-            return true;
-        }
+
+        return false;
     }
-
-    return false;
-}
+    @Override
+    public String getName() {
+        return name;
+    }
     
 }

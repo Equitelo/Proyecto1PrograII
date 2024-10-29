@@ -1,5 +1,6 @@
 package larasamuelproject1;
 
+import javax.swing.JOptionPane;
 import pieces.Piece;
 
 public class CheckScanner {
@@ -25,29 +26,35 @@ public class CheckScanner {
         }
         
         if(generalFaceToFace()){
+            
             return true;
         }
         
         return false;
     }
 
-    private boolean generalFaceToFace(){
+    public boolean generalFaceToFace() {
+    // Encuentra las posiciones de los Generales
         Piece whiteGeneral = board.findGeneral(true);
-        Piece redGeneral = board.findGeneral(false);
-        
-        if (whiteGeneral.col != redGeneral.col) {
+        Piece blackGeneral = board.findGeneral(false);
+
+        // Verifica si están en la misma columna
+        if (whiteGeneral.col != blackGeneral.col) {
             return false;
         }
-        
-        int startRow = Math.min(whiteGeneral.row, redGeneral.row)+1;
-        int endRow = Math.max(whiteGeneral.row, redGeneral.row);
-        
-        for (int row = startRow; row < endRow; row++) {
-            if (board.getPiece(whiteGeneral.col, row)!=null) {
+
+        // Revisa si hay alguna pieza entre los Generales en la misma columna
+        int startRow = Math.min(whiteGeneral.row, blackGeneral.row);
+        int endRow = Math.max(whiteGeneral.row, blackGeneral.row);
+
+        for (int row = startRow + 1; row < endRow; row++) {
+            if (board.getPiece(whiteGeneral.col, row) != null) {
+                // Hay una pieza entre los Generales
                 return false;
             }
         }
-        
+
+        // No hay piezas entre los Generales, están "cara a cara"
         return true;
     }
     public boolean isGameOver(Piece general){

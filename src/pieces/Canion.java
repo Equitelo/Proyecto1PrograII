@@ -88,5 +88,9 @@ public class Canion extends Piece {
         Piece targetPiece = board.getPiece(endCol, endRow);
         return foundMiddlePiece && targetPiece != null && targetPiece.isWhite != this.isWhite;
     }
+
+    public String getName() {
+        return name;
+    }
     
 }

@@ -3,14 +3,7 @@ package larasamuelproject1;
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
-import pieces.Advisor;
-import pieces.Canion;
-import pieces.Elephant;
-import pieces.General;
-import pieces.Knight;
-import pieces.Pawn;
-import pieces.Piece;
-import pieces.Rook;
+import pieces.*;
 
 public class Board extends JPanel{
     
@@ -30,13 +23,30 @@ public class Board extends JPanel{
     private boolean isWhiteToMove = false;
     private boolean isGameOver = false;
     
-    public Board(){
+    private JTextArea whiteCaptureArea;
+    private JTextArea redCaptureArea;
+    private JLabel turnoLabel;
+    
+    public Board(JTextArea whiteCaptureArea, JTextArea redCaptureArea, JLabel turnoLabel){
         this.setPreferredSize(new Dimension(cols * titleSize, rows * titleSize));
         
         this.addMouseListener(input);
         this.addMouseMotionListener(input);
         
         this.addPieces();
+        
+        this.turnoLabel=turnoLabel;
+        this.whiteCaptureArea=whiteCaptureArea;
+        this.redCaptureArea=redCaptureArea;
+        actualizarTurnoLabel();
+    }
+    
+    private void actualizarTurnoLabel () {
+        if (isWhiteToMove) {
+            turnoLabel.setText("Turno:\nWhite");
+        } else {
+            turnoLabel.setText("Turno:\nRed");
+        }
     }
     
     public Piece getPiece(int col, int row){
@@ -60,16 +70,52 @@ public class Board extends JPanel{
         capture(move);
         
         isWhiteToMove = !isWhiteToMove;
+        actualizarTurnoLabel();
         
         updateGameState();
     }
     
     public void capture(Move move) {
         pieceList.remove(move.capture);
+        
+        if (move.capture!=null) {
+            String capturedPieceName = move.capture.getName();
+            if (move.capture.isWhite) {
+                whiteCaptureArea.append(capturedPieceName + "\n");
+            } else {
+                redCaptureArea.append(capturedPieceName + "\n");
+            }
+        }
     }
     
     public boolean isValidMove(Move move) {
-        
+        // Guardamos la posición original de la pieza seleccionada
+        int originalCol = move.piece.col;
+        int originalRow = move.piece.row;
+
+        // Guardamos la pieza de captura, si existe
+        Piece capturedPiece = getPiece(move.newCol, move.newRow);
+
+        // Movemos temporalmente la pieza
+        move.piece.col = move.newCol;
+        move.piece.row = move.newRow;
+
+        // Verificamos si los Generales quedan cara a cara
+        boolean isFaceToFace = checkScanner.generalFaceToFace();
+
+        // Revertimos el movimiento
+        move.piece.col = originalCol;
+        move.piece.row = originalRow;
+
+        // Si los Generales quedan cara a cara, invalidamos el movimiento
+        if (isFaceToFace) {
+            return false;
+        }
+
+        // Otras validaciones
+        if (move.newCol < 0 || move.newCol >= cols || move.newRow < 0 || move.newRow >= rows) {
+            return false;
+        }
         if (isGameOver) {
             return false;
         }
@@ -79,7 +125,7 @@ public class Board extends JPanel{
         if (sameTeam(move.piece, move.capture)) {
             return false;
         }
-        if (!move.piece.isValidMovement(move.newCol, move.newRow)){
+        if (!move.piece.isValidMovement(move.newCol, move.newRow)) {
             return false;
         }
         if (move.piece.moveCollidesWithPiece(move.newCol, move.newRow)) {
@@ -88,7 +134,8 @@ public class Board extends JPanel{
         if (checkScanner.isGeneralChecked(move)) {
             return false;
         }
-        
+
+        // El movimiento es válido si pasa todas las verificaciones
         return true;
     }
     
@@ -154,15 +201,6 @@ public class Board extends JPanel{
             return;
         }
         
-        if (checkScanner.isGameOver(general)) {
-            if (checkScanner.isGeneralChecked(new Move(this, general, general.col, general.row))) {
-                String winner = isWhiteToMove ? "Rojas" : "Blancas";
-                JOptionPane.showMessageDialog(null, winner + " ganan!");
-            } else {
-                JOptionPane.showMessageDialog(null, "Stalemate");
-            }
-            isGameOver = true;
-        }
     }
     
     @Override

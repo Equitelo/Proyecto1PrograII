@@ -22,24 +22,28 @@ public class Pawn extends Piece{
     
     @Override
     public boolean isValidMovement(int col, int row) {
-    int colorIndex = isWhite ? -1 : 1;
+        int colorIndex = isWhite ? -1 : 1;
 
-    if (this.col == col && row == this.row - colorIndex) {
-        Piece destino = board.getPiece(col, row);
-        if (destino == null || !board.sameTeam(this, destino)) {
-            return true;
-        }
-    }
-
-    boolean cruzoRio = (isWhite && this.row > 4) || (!isWhite && this.row < 5);
-
-    if (cruzoRio) {
-        if (Math.abs(col - this.col) == 1 && row == this.row) {
+        if (this.col == col && row == this.row - colorIndex) {
             Piece destino = board.getPiece(col, row);
-            return destino == null || !board.sameTeam(this, destino);
+            if (destino == null || !board.sameTeam(this, destino)) {
+                return true;
+            }
         }
+
+        boolean cruzoRio = (isWhite && this.row > 4) || (!isWhite && this.row < 5);
+
+        if (cruzoRio) {
+            if (Math.abs(col - this.col) == 1 && row == this.row) {
+                Piece destino = board.getPiece(col, row);
+                return destino == null || !board.sameTeam(this, destino);
+            }
+        }
+
+        return false;
     }
 
-    return false;
-}
+    public String getName() {
+        return name;
+    }
 }

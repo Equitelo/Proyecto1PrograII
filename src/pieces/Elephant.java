@@ -35,6 +35,10 @@ public class Elephant extends Piece {
         } 
         return false;
     }
+
+    public String getName() {
+        return name;
+    }
     
     @Override
     public boolean moveCollidesWithPiece(int col, int row){
