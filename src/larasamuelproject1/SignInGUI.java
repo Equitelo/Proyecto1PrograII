@@ -71,8 +71,6 @@ public class SignInGUI extends JFrame implements ActionListener{
         panel.add(userTxt);
         panel.add(passwordLbl);
         panel.add(passwordTxt);
-        panel.add(generateDateBtn);
-        panel.add(getFechaLbl);
         panel.add(signInBtn);
         this.add(panel);
     }
@@ -87,24 +85,14 @@ public class SignInGUI extends JFrame implements ActionListener{
             Menu startPage = new Menu(admin);
             startPage.setVisible(true);
             this.dispose();
-        }else if (evt.getSource()==generateDateBtn) {
-            Calendar calendar = Calendar.getInstance();
-            int day = Calendar.DATE;
-            int month = (Calendar.MONTH)+1;
-            int year = Calendar.YEAR;
-            
-            getFechaLbl.setText(day+"/"+month+"/"+year);
-        }else if(evt.getSource()==signInBtn && fecha.equals("DD/MM/YY")){
-            JOptionPane.showMessageDialog(null, "No has generado la fecha aun!");
         }else if (longitud<5){
             JOptionPane.showMessageDialog(null, "La contraseña debe ser de 5 caracteres al menos");
-        } else if (evt.getSource()==signInBtn && !(fecha.equals("DD/MM/YY")) && longitud>=5){
+        } else if (evt.getSource()==signInBtn && longitud>=5){
             if (admin.agregarUsuario(user, password)) {
                 JOptionPane.showMessageDialog(null, "Se ha registrado correctamente!");
                 MenuGame menuG = new MenuGame(admin);
                 menuG.setVisible(true);
                 menuG.setLocationRelativeTo(null);
-                menuG.setlblNameUser("@"+userTxt.getText());
                 this.dispose();
             }
         }

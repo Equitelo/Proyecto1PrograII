@@ -35,28 +35,34 @@ public class CheckScanner {
 
     public boolean generalFaceToFace() {
     // Encuentra las posiciones de los Generales
-        Piece whiteGeneral = board.findGeneral(true);
-        Piece blackGeneral = board.findGeneral(false);
+    Piece whiteGeneral = board.findGeneral(true);
+    Piece blackGeneral = board.findGeneral(false);
 
-        // Verifica si están en la misma columna
-        if (whiteGeneral.col != blackGeneral.col) {
+    // Verifica si alguno de los Generales es null
+    if (whiteGeneral == null || blackGeneral == null) {
+        // No pueden estar cara a cara si uno de ellos no está en el tablero
+        return false;
+    }
+
+    // Verifica si están en la misma columna
+    if (whiteGeneral.col != blackGeneral.col) {
+        return false;
+    }
+
+    // Revisa si hay alguna pieza entre los Generales en la misma columna
+    int startRow = Math.min(whiteGeneral.row, blackGeneral.row);
+    int endRow = Math.max(whiteGeneral.row, blackGeneral.row);
+
+    for (int row = startRow + 1; row < endRow; row++) {
+        if (board.getPiece(whiteGeneral.col, row) != null) {
+            // Hay una pieza entre los Generales
             return false;
         }
-
-        // Revisa si hay alguna pieza entre los Generales en la misma columna
-        int startRow = Math.min(whiteGeneral.row, blackGeneral.row);
-        int endRow = Math.max(whiteGeneral.row, blackGeneral.row);
-
-        for (int row = startRow + 1; row < endRow; row++) {
-            if (board.getPiece(whiteGeneral.col, row) != null) {
-                // Hay una pieza entre los Generales
-                return false;
-            }
-        }
-
-        // No hay piezas entre los Generales, están "cara a cara"
-        return true;
     }
+
+    // No hay piezas entre los Generales, están "cara a cara"
+    return true;
+}
     public boolean isGameOver(Piece general){
         for(Piece piece : board.pieceList){
             if(board.sameTeam(piece, general)){

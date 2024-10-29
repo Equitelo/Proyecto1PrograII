@@ -16,18 +16,23 @@ public class Board extends JPanel{
     
     public Piece selectedPiece;
     
+    Admin admin = new Admin();
     Input input = new Input(this);
-    
     CheckScanner checkScanner = new CheckScanner(this);
     
+    
     private boolean isWhiteToMove = false;
-    private boolean isGameOver = false;
+    public boolean isGameOver = false;
     
     private JTextArea whiteCaptureArea;
     private JTextArea redCaptureArea;
     private JLabel turnoLabel;
+    GameState gameStateListener;
     
-    public Board(JTextArea whiteCaptureArea, JTextArea redCaptureArea, JLabel turnoLabel){
+    public Board(Admin admin,JTextArea whiteCaptureArea, JTextArea redCaptureArea, JLabel turnoLabel, GameState gameStateListener){
+        this.admin=admin;
+        this.gameStateListener=gameStateListener;
+        
         this.setPreferredSize(new Dimension(cols * titleSize, rows * titleSize));
         
         this.addMouseListener(input);
@@ -196,9 +201,18 @@ public class Board extends JPanel{
         
         if (general == null) {
             String winner = isWhiteToMove ? "Rojas" : "Blancas";
-            JOptionPane.showMessageDialog(null, winner + " han ganado tras capturar al General!");
-            isGameOver = true;
-            return;
+            if (winner.equals("Rojas")) {
+                if (this.gameStateListener!=null) {
+                    gameStateListener.onPlayerWin();
+                    isGameOver = true;
+                }
+            }else {
+                if (this.gameStateListener!=null) {
+                    gameStateListener.onPlayerLose();;
+                    isGameOver = true;
+                }
+            }
+            
         }
         
     }

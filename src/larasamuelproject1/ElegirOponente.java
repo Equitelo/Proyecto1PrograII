@@ -20,6 +20,7 @@ public class ElegirOponente extends JFrame implements ActionListener{
     }
     
     private void initComponents(){
+        
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setSize(500, 500);
         this.setLocationRelativeTo(null);
@@ -45,6 +46,7 @@ public class ElegirOponente extends JFrame implements ActionListener{
         aceptBtn.setBounds(200, 400, 100, 25);
         aceptBtn.addActionListener(this);
         
+        panel.add(goBackBtn);
         panel.add(title);
         panel.add(choseOponent);
         panel.add(aceptBtn);
@@ -59,8 +61,12 @@ public class ElegirOponente extends JFrame implements ActionListener{
             
             if (seleccionado.equals("No hay suficientes usuarios registrados")){
                 JOptionPane.showMessageDialog(null, "No es posible jugar!");
-            }else{
+            } else {
                 JOptionPane.showMessageDialog(null, "A JUGAR!");
+                JFrameBoard frameBoard = new JFrameBoard(admin);
+                frameBoard.setVisible(true);
+                frameBoard.setLblPlayer2(seleccionado);
+                this.dispose();
             }
         }else if (evt.getSource()==goBackBtn){
             MenuGame menuG = new MenuGame(admin);

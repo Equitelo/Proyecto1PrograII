@@ -76,13 +76,14 @@ public class LogInGUI extends JFrame implements ActionListener{
             if (user.isEmpty()||password.isEmpty()) {
                 JOptionPane.showMessageDialog(null, "No ha llenado todas las casillas");
             }else {
-                if(admin.buscarUsuario(user)){
+                if(admin.buscarUsuario(user)!=null){
                     JOptionPane.showMessageDialog(null, "Usuario encontrado!");
                     MenuGame menuG = new MenuGame(admin);
                     menuG.setVisible(true);
                     menuG.setLocationRelativeTo(null);
-                    menuG.setlblNameUser("@"+userTxt.getText());
                     this.dispose();
+                }else {
+                    JOptionPane.showMessageDialog(null, "Usuario no encontrado");
                 }
             }
         }

@@ -10,7 +10,7 @@ import java.awt.event.*;
 
 public class MenuGame extends JFrame implements ActionListener{
     
-    private String usuario;
+//    private String usuario;
     
     private JPanel panel;
     private JLabel lblNameUser;
@@ -24,9 +24,11 @@ public class MenuGame extends JFrame implements ActionListener{
     public MenuGame(Admin admin){
         this.admin=admin;
         initComponents();
+        this.setLocationRelativeTo(null);
     }
     
     private void initComponents () {
+        
         this.setSize(500, 500);
         panel = new JPanel();
         panel.setSize(500, 500);
@@ -34,6 +36,7 @@ public class MenuGame extends JFrame implements ActionListener{
         panel.setLayout(null);
         
         lblNameUser = new JLabel();
+        lblNameUser.setText("@"+admin.getUsuarioActual());
         lblNameUser.setFont(new Font("Calibri", Font.BOLD, 40));
         lblNameUser.setBounds(200, 100, 200, 50);
         
@@ -58,10 +61,6 @@ public class MenuGame extends JFrame implements ActionListener{
         this.add(panel);
     }
     
-    public void setlblNameUser(String usuario){
-        this.usuario=usuario;
-        lblNameUser.setText(usuario);
-    }
     
     @Override
     public void actionPerformed(ActionEvent evt){
@@ -78,39 +77,29 @@ public class MenuGame extends JFrame implements ActionListener{
                 case 1:
                     break;
             }
-        }else if(evt.getSource()==miCuentaBtn){
-            String responses[] = {"Cambiar Password", "Cerrar mi Cuenta"};
-            int getResponse = JOptionPane.showOptionDialog(null, "Que deseas hacer?", "Ver mi informacion", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null, responses, 0);
-            switch(getResponse){
-                case 0:
-                    
-                    String getActual = JOptionPane.showInputDialog("Ingresar contraseña actual: ");
-                    if(admin.usuarioActual.getPassword().equals(getActual)){
-                        String getNueva = JOptionPane.showInputDialog("Ingresar nueva: ");
-                        if(getNueva != null && !getNueva.isEmpty() && getNueva.length() == 5){
-                            admin.usuarioActual.setNewPassword(getNueva);
-                            JOptionPane.showMessageDialog(null, "Actualizada Correctamente!");
-                        } else {
-                            JOptionPane.showMessageDialog(null, "No es valido!");
-                        }    
-                    } else {
-                        JOptionPane.showMessageDialog(null, "Es incorrecta.");
-                    }
-                    break;
-                case 1:
-                    break;
-            }
+        } else if (evt.getSource()==miCuentaBtn) {
+            
+            MiCuenta cuenta = new MiCuenta(admin);
+            cuenta.setVisible(true);
+            this.dispose();
+            
         }else if(evt.getSource()==reportesBtn){
             String responses[] = {"Ranking", "Logs de mis juegos"};
             int getResponse = JOptionPane.showOptionDialog(null, "Revisa tu Rendimiento", "Reportes", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null, responses, 0);
             switch(getResponse){
                 case 0:
+                    Ranking rank = new Ranking(admin);
+                    rank.setVisible(true);
+                    this.dispose();
                     break;
                 case 1:
+                    HistorialPartidas hP = new HistorialPartidas(admin);
+                    hP.setVisible(true);
+                    this.dispose();
                     break;
             }
         }else if(evt.getSource()==logOutBtn){
-            int salida = JOptionPane.showConfirmDialog(null, usuario+", desea cerrar sesion?", "Cerrar Sesion", JOptionPane.OK_CANCEL_OPTION);
+            int salida = JOptionPane.showConfirmDialog(null, "@"+admin.usuarioActual.getUser()+", desea cerrar sesion?", "Cerrar Sesion", JOptionPane.OK_CANCEL_OPTION);
             if(salida==0){
                 Menu menu = new Menu(admin);
                 menu.setVisible(true);
